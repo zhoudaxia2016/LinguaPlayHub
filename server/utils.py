@@ -20,5 +20,4 @@ def queryWord(word):
     if match:
         word = match.group(1)
         return queryWord(word)
-    print(html)
-    return re.sub(r'(<link rel="stylesheet" href=")([^"]+)(" type="text/css"\s*>)', r'\1/static/\2\3', html)
+    return re.sub(r'(<link rel="stylesheet" href=")([^"]+)(" type="text/css"\s*>)', '', html)

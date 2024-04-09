@@ -1,0 +1,29 @@
+html,
+body,
+#root,
+.App {
+  height: 100%;
+  overflow: hidden;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-title {
+  font-size: 50px;
+  text-align: center;
+  line-height: 100px;
+  font-weight: bold;
+  color: rgb(74, 84, 120);
+}
+
+.query-result {
+  flex: 1;
+  overflow: auto;
+  & > * {
+    flex-shrink: 0;
+    width: 600px;
+    margin: auto;
+  }
+}
