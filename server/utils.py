@@ -20,7 +20,6 @@ def loadDictsMetaInfo():
         dicts.append({'mdx': MDX(dict_path)})
 
 def queryWord(word, activeDictIndex):
-    global dicts
     activeDict = dicts[activeDictIndex]
     if 'items' not in activeDict:
         mdx = activeDict['mdx']
@@ -29,7 +28,15 @@ def queryWord(word, activeDictIndex):
         activeDict.update({'items': items, 'headwords': headwords})
     word = word.encode()
     if word not in activeDict['headwords']:
-        return ''
+        found = []
+        for w in activeDict['headwords']:
+            if word in w:
+                found.append(w)
+        if len(found) > 0:
+            return '\n'.join([queryWord(w.decode(), activeDictIndex) for w in found])
+        else:
+            return ''
+
     wordIndex = activeDict['headwords'].index(word)
     word, html = activeDict['items'][wordIndex]
     word, html = word.decode(), html.decode('utf-8')
