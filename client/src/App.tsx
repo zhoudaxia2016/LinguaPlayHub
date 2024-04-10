@@ -4,10 +4,12 @@ import Header from './Header'
 
 function App() {
   const [result, setResult] = useState('')
+  const [empty, setEmpty] = useState(false)
   const handleSearch = useCallback((word: string) => {
     fetch('/api/query?word=' + word).then(async res => {
-      const json = await res.json()
-      setResult(json.html)
+      const {empty, html} = await res.json()
+      setEmpty(empty)
+      setResult(html)
     })
   }, [])
 
@@ -15,7 +17,11 @@ function App() {
     <div className="App">
       <div className="app-title">LanguaPlayHub</div>
       <Header onSearch={handleSearch}/>
-      <div className="query-result" dangerouslySetInnerHTML={{__html: result}}></div>
+      {
+        empty
+          ? <div className="no-result">无结果</div>
+          : <div className="query-result" dangerouslySetInnerHTML={{__html: result}}></div>
+      }
     </div>
   )
 }

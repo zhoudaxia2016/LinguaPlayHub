@@ -16,8 +16,6 @@ yarn start
 
 将mdx文件放到`server/dicts`
 
-现在mdx字典暂时写死在`server/utils.py`
-所以第二步要修改`server/utils.py`的`filename`变量
 
 ```bash
 cd server
