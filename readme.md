@@ -30,3 +30,7 @@ uvicorn server:app --reload
 - [ ] 语言游戏
 - [ ] 背词
 - [ ] 阅读材料分析（生词分析，语法汇总等）
+
+## 资源
+- https://forum.freemdict.com/ mdict交流社区
+- https://mdx.mdict.org/ mdict字典资源
