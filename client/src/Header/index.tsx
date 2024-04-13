@@ -1,35 +1,61 @@
 import './index.less'
-import React, {useCallback, useEffect, useState} from 'react'
-import {Input, Select} from 'antd'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {Input, Select, Popover, ConfigProvider} from 'antd'
 
 interface IProps {
+  activeDicts: string[],
+  onActiveDictsChange: (dicts: string[]) => void,
   onSearch: (word: string) => void,
 }
 
-export default function Header({onSearch}: IProps) {
-  const [activeDictId, setActiveDictId] = useState(0)
-  const [dicts, setDicts] = useState([])
+export default function Header({activeDicts, onSearch, onActiveDictsChange}: IProps) {
+  const [dicts, setDicts] = useState<any[]>([])
   const handleSelectDict = useCallback((value) => {
-    fetch('/api/dict/active', {
-      method: 'POST',
-      body: JSON.stringify({id: value})
-    })
-    setActiveDictId(value)
-  }, [])
+    onActiveDictsChange([value])
+  }, [onActiveDictsChange])
+
   useEffect(() => {
     fetch('/api/dict/all').then(async (res) => {
       const json = await res.json()
-      setDicts(json.map(_ => ({value: _.id, label: _.name})))
-    })
-    fetch('/api/dict/active').then(async res => {
-      const id = await res.text()
-      setActiveDictId(Number(id))
+      setDicts(json)
     })
   }, [])
+
+  const options = useMemo(() => {
+    return dicts.map(dict => {
+      const popOverContent = (
+        <div className="dict-option-tip">
+          <div className="dict-option-tip-item description">
+            <div>描述</div>
+            <div dangerouslySetInnerHTML={{__html: dict.description}}></div>
+          </div>
+          <div className="dict-option-tip-item">
+            <div>创建日期</div>
+            <div>{dict.create_date}</div>
+          </div>
+          <div className="dict-option-tip-item">
+            <div>词条数</div>
+            <div>{dict.entry}</div>
+          </div>
+        </div>
+      )
+      return {
+        value: dict.id,
+        label: <Popover placement="right" title={dict.title} content={popOverContent}><div>{dict.title}</div></Popover>
+      }
+    })
+  }, [dicts])
+  const theme = {
+    components: {
+      Popover: {zIndexPopup: 9999}
+    }
+  }
   return (
-    <div className="header">
-      <Select className="dict-select" value={activeDictId} options={dicts} onChange={handleSelectDict}/>
-      <Input.Search className="search-input" onSearch={onSearch}/>
-    </div>
+    <ConfigProvider theme={theme}>
+      <div className="header">
+        <Select className="dict-select" value={dicts.length ? activeDicts[0] : ''} options={options} onChange={handleSelectDict}/>
+        <Input.Search className="search-input" onSearch={onSearch}/>
+      </div>
+    </ConfigProvider>
   )
 }

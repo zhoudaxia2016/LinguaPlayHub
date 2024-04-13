@@ -11,3 +11,16 @@
     width: 200px;
   }
 }
+.dict-option-tip {
+  max-width: 300px;
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    &.description {
+      flex-direction: column;
+    }
+  }
+}

@@ -1,31 +1,29 @@
-from fastapi import Request, FastAPI
+from fastapi import Request, FastAPI, Depends
+from sqlalchemy.orm import sessionmaker
+from models import connect, Dict
 import utils
-
-activeDictIndex = 0
 
 app = FastAPI()
 
-utils.loadDictsMetaInfo()
-utils.loadDict(activeDictIndex)
+engine = connect()
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 @app.get("/api/query")
-def read_item(word: str = None):
-    html = utils.queryWord(word, activeDictIndex)
-    content = {"html": html, 'empty': html == ''}
-    return content
+def read_item(word: str, dictId: str, db = Depends(get_db)):
+    dict = db.query(Dict).filter_by(id=dictId).first()
+    if dict:
+        html = utils.queryWord(word, dict)
+        content = {"html": html, 'empty': html == ''}
+        return content
+    return {}
 
 @app.get("/api/dict/all")
-def get_all_dicts():
-    dicts = utils.getAllDictInfo()
+def get_all_dicts(db = Depends(get_db)):
+    dicts = db.query(Dict).all()
     return dicts
-
-@app.post("/api/dict/active")
-async def set_active_dict(request: Request):
-    json = await request.json()
-    global activeDictIndex
-    activeDictIndex = json['id']
-    return
-
-@app.get("/api/dict/active")
-async def set_active_dict(request: Request):
-    return activeDictIndex
