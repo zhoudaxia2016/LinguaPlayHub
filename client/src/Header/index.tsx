@@ -13,7 +13,7 @@ interface IProps {
 export default function Header({searchWord, activeDicts, onSearch, onActiveDictsChange, onSearchWordChange}: IProps) {
   const [dicts, setDicts] = useState<any[]>([])
   const handleSelectDict = useCallback((value) => {
-    onActiveDictsChange([value])
+    onActiveDictsChange(value)
   }, [onActiveDictsChange])
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function Header({searchWord, activeDicts, onSearch, onActiveDicts
   return (
     <ConfigProvider theme={theme}>
       <div className="header">
-        <Select className="dict-select" value={dicts.length ? activeDicts[0] : ''} options={options} onChange={handleSelectDict}/>
+        <Select className="dict-select" mode="multiple" value={dicts.length ? activeDicts : []} options={options} onChange={handleSelectDict}/>
         <Input.Search className="search-input" value={searchWord} onSearch={onSearch} onChange={onSearchWordChange}/>
       </div>
     </ConfigProvider>

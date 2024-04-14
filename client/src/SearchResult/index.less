@@ -1,0 +1,36 @@
+.query-result {
+  padding: 20px;
+  & > * {
+    flex-shrink: 0;
+    margin: auto;
+  }
+  &:not(:last-child) {
+    border-bottom: 3px solid rgb(74, 84, 120);
+  }
+  .dict-name {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+.query-result-close {
+  margin-top: 10px;
+  .title {
+    font-weight: bold;
+  }
+  .content {
+    margin-top: 8px;
+  }
+  .item {
+    margin-right: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 30px;
+    &:hover {
+      text-decoration: underline;
+      color: #3E517A;
+      font-weight: bold;
+    }
+  }
+}
