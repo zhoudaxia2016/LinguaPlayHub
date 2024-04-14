@@ -1,0 +1,4 @@
+fastapi==0.110.1
+pydantic==2.7.0
+readmdict==0.1.1
+SQLAlchemy==2.0.29
