@@ -18,9 +18,11 @@ def get_db():
 def read_item(word: str, dictId: str, db = Depends(get_db)):
     dict = db.query(Dict).filter_by(id=dictId).first()
     if dict:
-        html = utils.queryWord(word, dict)
-        content = {"html": html, 'empty': html == ''}
-        return content
+        result = utils.queryWord(word, dict)
+        if isinstance(result, str):
+            return {"html": result}
+        else:
+            return result
     return {}
 
 @app.get("/api/dict/all")

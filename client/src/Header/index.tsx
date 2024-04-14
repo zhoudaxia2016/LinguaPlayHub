@@ -3,12 +3,14 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Input, Select, Popover, ConfigProvider} from 'antd'
 
 interface IProps {
+  searchWord: string,
   activeDicts: string[],
   onActiveDictsChange: (dicts: string[]) => void,
   onSearch: (word: string) => void,
+  onSearchWordChange: (e) => void,
 }
 
-export default function Header({activeDicts, onSearch, onActiveDictsChange}: IProps) {
+export default function Header({searchWord, activeDicts, onSearch, onActiveDictsChange, onSearchWordChange}: IProps) {
   const [dicts, setDicts] = useState<any[]>([])
   const handleSelectDict = useCallback((value) => {
     onActiveDictsChange([value])
@@ -54,7 +56,7 @@ export default function Header({activeDicts, onSearch, onActiveDictsChange}: IPr
     <ConfigProvider theme={theme}>
       <div className="header">
         <Select className="dict-select" value={dicts.length ? activeDicts[0] : ''} options={options} onChange={handleSelectDict}/>
-        <Input.Search className="search-input" onSearch={onSearch}/>
+        <Input.Search className="search-input" value={searchWord} onSearch={onSearch} onChange={onSearchWordChange}/>
       </div>
     </ConfigProvider>
   )

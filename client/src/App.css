@@ -8,6 +8,7 @@ body,
 .App {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .app-title {
@@ -19,11 +20,12 @@ body,
 }
 
 .query-result {
+  padding: 20px;
   flex: 1;
   overflow: auto;
+  width: 60%;
   & > * {
     flex-shrink: 0;
-    width: 600px;
     margin: auto;
   }
 }
@@ -32,4 +34,26 @@ body,
   text-align: center;
   font-size: 20px;
   font-weight: bold;
+  width: 100%;
+}
+
+.query-result-close {
+  margin-top: 10px;
+  .title {
+    font-weight: bold;
+  }
+  .content {
+    margin-top: 8px;
+  }
+  .item {
+    margin-right: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 30px;
+    &:hover {
+      text-decoration: underline;
+      color: #3E517A;
+      font-weight: bold;
+    }
+  }
 }
