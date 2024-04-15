@@ -1,0 +1,12 @@
+.no-result {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+}
+
+.query-result-wrapper {
+  flex: 1;
+  overflow: auto;
+  width: 60%;
+}
