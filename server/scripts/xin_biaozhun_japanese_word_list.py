@@ -42,7 +42,7 @@ tagger = MeCab.Tagger(ipadic.MECAB_ARGS + CHASEN_ARGS)
 def get_original_form(word):
     return ''.join(tagger.parse(word).split('\t')[2:-6:5])
 
-def get_word_list(start, end):
+def get_word_list(start, end, level):
     for i in range(start, end + 1):
         # 不收录短语（单词应该都有词性）
         if pd.isna(sheet.iloc[i, 3]) or sheet.iloc[i, 3] == '专':
@@ -69,10 +69,10 @@ def get_word_list(start, end):
             hirakana = re.sub(r'します$', '', hirakana)
         if entry not in word_set:
             word_set.add(entry)
-            session.add(TextbookWord(entry=entry, hirakana=hirakana, translation=translation, lesson=lesson, bookname=bookname, wordtype=wordtype))
+            session.add(TextbookWord(entry=entry, hirakana=hirakana, translation=translation, lesson=lesson, bookname=bookname, wordtype=wordtype, level=level))
 
 
-get_word_list(0, 2142)
-get_word_list(2144, 6037)
+get_word_list(0, 2142, 0)
+get_word_list(2144, 6037, 1)
 session.commit()
 session.close()

@@ -42,6 +42,7 @@ class TextbookWord(Base):
     translation = Column(String(32))
     bookname = Column(String(16))
     wordtype = Column(Integer())
+    level = Column(Integer())
 
 def create(engine):
     Base.metadata.create_all(engine)
