@@ -11,9 +11,11 @@ export default function App() {
         <NavLink to="">首页</NavLink>
         <NavLink to="wordsearch">查词</NavLink>
       </nav>
-      <Routes>
-        <Route path="/wordsearch" element={<WordSearch/>}/>
-      </Routes>
+      <div className="app-content">
+        <Routes>
+          <Route path="/wordsearch" element={<WordSearch/>}/>
+        </Routes>
+      </div>
     </div>
   )
 }

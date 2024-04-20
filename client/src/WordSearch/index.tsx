@@ -44,7 +44,7 @@ function App() {
   const empty = searchResult.length === 0
 
   return (
-    <div className="App">
+    <div className="word-search">
       <Header activeDicts={activeDicts} searchWord={searchWord} onSearch={handleSearch}
               onActiveDictsChange={handleActiveDictsChange} onSearchWordChange={handleSearchWordChange}/>
       <div className="query-result-wrapper">
