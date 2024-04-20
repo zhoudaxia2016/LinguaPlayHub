@@ -1,19 +1,19 @@
 import './App.less'
 import React from 'react'
 import WordSearch from './WordSearch'
-import {NavLink, Routes, Route} from "react-router-dom"
+import Read from './Read'
+import Nav from './Nav'
+import {Routes, Route} from "react-router-dom"
 
 export default function App() {
   return (
     <div className="app">
-      <div className="app-title">LanguaPlayHub</div>
-      <nav>
-        <NavLink to="">首页</NavLink>
-        <NavLink to="wordsearch">查词</NavLink>
-      </nav>
+      <a className="app-title" href="/">LanguaPlayHub</a>
       <div className="app-content">
         <Routes>
+          <Route path="/" element={<Nav/>}/>
           <Route path="/wordsearch" element={<WordSearch/>}/>
+          <Route path="/read" element={<Read/>}/>
         </Routes>
       </div>
     </div>
