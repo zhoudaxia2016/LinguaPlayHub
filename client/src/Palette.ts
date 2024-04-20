@@ -1,8 +1,8 @@
 export default {
-  bg1: '#dabba9',
-  bg2: '#8c4e37',
-  fg1: '#402722',
-  fg2: '',
-  stress1: '#d9383a',
-  stress2: '#a73736',
+  bg1: '#f8f2ea',
+  bg2: '#f1e9dc',
+  fg1: '#303133',
+  fg2: '#292924',
+  stress1: '#ffb3da',
+  stress2: '#294636',
 }

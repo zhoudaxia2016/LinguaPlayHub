@@ -27,7 +27,7 @@ body {
   font-weight: bold;
   &,
   &:visited {
-    color: var(--bg1);
+    color: var(--fg1);
   }
 }
 
@@ -39,4 +39,17 @@ nav {
     font-size: 30px;
     margin-right: 20px;
   }
+}
+
+.ant-popover-arrow::before,
+.ant-popover-inner {
+  background: #fff !important;
+}
+
+&::-webkit-scrollbar {
+  width: 10px;
+}
+&::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: var(--fg1);
 }

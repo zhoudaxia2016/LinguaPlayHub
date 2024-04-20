@@ -3,7 +3,9 @@ from pydantic import BaseModel
 from sqlalchemy.orm import sessionmaker
 from models import connect, Dict
 from typing import List
+import re
 import utils
+from parse_sentence import parse
 
 app = FastAPI()
 
@@ -41,3 +43,11 @@ def query(item: QueryParams, db=Depends(get_db)):
 def get_all_dicts(db=Depends(get_db)):
     dicts = db.query(Dict).all()
     return dicts
+
+class ParseTextParams(BaseModel):
+    text: str
+
+@app.post("/api/parsetext")
+def parse_sentence(item: ParseTextParams):
+    sentences = re.split(r'\n+', item.text)
+    return list(map(lambda s: parse(s), sentences))
