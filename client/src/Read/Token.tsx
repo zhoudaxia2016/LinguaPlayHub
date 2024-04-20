@@ -52,10 +52,11 @@ export default function Token({token: {text, kana, base1, tag1, tag2}}: IProps) 
     </div>
   )
 
+  const isVerb = tag1.split('-')[0] === '動詞'
   return (
-    <Popover placement="right" content={tooltip} onOpenChange={() => handleOpenTooltip(text)}>
+    <Popover placement="right" content={tooltip} onOpenChange={() => handleOpenTooltip(base1)}>
       <span className="word" style={{'--color': wordColorMap[tag2] || defaultWordColor} as React.CSSProperties}>
-        <ruby>{text}<rt>{text === kana ? '' : (tag2 === WORD_TAG.verb ? base1 : kana)}</rt></ruby>
+        <ruby>{text}<rt>{text === kana ? '' : (isVerb ? base1 : kana)}</rt></ruby>
       </span>
     </Popover>
   )

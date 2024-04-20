@@ -5,7 +5,7 @@ export interface IProps {
   tokens: IToken[]
 }
 
-export default function Section({tokens}: IProps) {
+function Section({tokens}: IProps) {
   return (
     <div className="sentence-section">
       {tokens.map((token, i) => (
@@ -14,3 +14,5 @@ export default function Section({tokens}: IProps) {
     </div>
   )
 }
+
+export default React.memo(Section)
