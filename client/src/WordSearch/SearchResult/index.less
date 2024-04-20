@@ -1,5 +1,8 @@
 .query-result {
+  box-sizing: border-box;
   padding: 20px;
+  overflow: hidden;
+  word-break: break-all;
   & > * {
     flex-shrink: 0;
     margin: auto;
@@ -31,7 +34,6 @@
     &:hover {
       text-decoration: underline;
       color: #3E517A;
-      font-weight: bold;
     }
   }
 }
