@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import sessionmaker
-from models import connect, Dict
+from models import connect, Dict, Text, TextTag
 from typing import List
 import re
 import utils
@@ -47,7 +47,46 @@ def get_all_dicts(db=Depends(get_db)):
 class ParseTextParams(BaseModel):
     text: str
 
-@app.post("/api/parsetext")
+@app.post("/api/text/parse")
 def parse_sentence(item: ParseTextParams):
     sentences = re.split(r'\n+', item.text)
     return list(map(lambda s: parse(s), sentences))
+
+class TextParams(BaseModel):
+    title: str
+    tags: str = None
+    desc: str = None
+    content: str
+    tokenization: str
+
+@app.post("/api/text")
+def save_text(item: TextParams, db=Depends(get_db)):
+    db.add(Text(title=item.title, tags=item.tags, desc=item.desc, content=item.content, tokenization=item.tokenization))
+    db.commit()
+
+class TextDeleteParams(BaseModel):
+    id: int
+
+@app.post("/api/text/delete")
+def delete_text(item: TextDeleteParams, db=Depends(get_db)):
+    db.query(Text).filter_by(id=item.id).delete()
+    db.commit()
+
+@app.get("/api/text")
+def get_text(id: str = None, db=Depends(get_db)):
+    if id:
+        return db.query(Text).filter_by(id=id).first()
+    else:
+        return db.query(Text).all()
+
+class TextTagCreateParams(BaseModel):
+    title: str
+
+@app.post("/api/text/tag")
+def create_tag(item: TextTagCreateParams, db=Depends(get_db)):
+    db.add(TextTag(title=item.title))
+    db.commit()
+
+@app.get("/api/text/tag")
+def get_tag(db=Depends(get_db)):
+    return db.query(TextTag).all()

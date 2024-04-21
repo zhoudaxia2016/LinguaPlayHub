@@ -9,7 +9,10 @@
   padding: 20px;
   color: var(--fg1);
   overflow-y: auto;
-  .open-input {
+  .read-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     position: fixed;
     top: 200px;
     left: 100px;
@@ -88,5 +91,39 @@
     font-size: 20px;
     color: var(--stress1);
     border-bottom: 4px solid var(--fg1);
+  }
+}
+
+.text-list {
+  width: 500px;
+}
+.text-list-item {
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #294636;
+  cursor: pointer;
+  .text-title {
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .text-tags {
+    margin-left: 8px;
+  }
+  .text-title,
+  .text-desc {
+    margin-bottom: 4px;
+  }
+
+  &:hover {
+    .delete-btn {
+      display: block;
+    }
+  }
+  .delete-btn {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 10px;
   }
 }
