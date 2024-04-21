@@ -4,19 +4,22 @@ import re
 
 nlp = spacy.load("ja_core_news_lg")
 
-skip_heads = ['advcl', 'obj', 'nmod', 'acl', 'obl', 'cc', 'cop', 'nsubj']
+skip_heads = ['advcl', 'obj', 'nmod', 'acl', 'obl', 'cc', 'cop', 'nsubj', 'dep', 'advmod']
 skip_heads2 = ['compound']
 
 def handle_token(token):
     info = token.pos_
     kana = str(token.text)
     result = re.match(r'(Inflection=([^|]+)\|)?Reading=([^|]+)', str(token.morph))
+    tag = token.pos_
+    if token.tag_.split('-')[0] == '補助記号':
+        tag = 'PUNCT'
     if result is not None:
         info = result[2]
         kana = result[3]
     return {
         'text': token.text,
-        'tag': token.pos_,
+        'tag': tag,
         'info': info,
         'kana': jaconv.kata2hira(kana),
         'base': token.lemma_,

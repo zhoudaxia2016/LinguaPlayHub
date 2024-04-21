@@ -17,6 +17,8 @@ interface IProps {
 
 const dictMap = new Map()
 
+const isPunct = tag => ['PUNCT', 'SYM'].includes(tag)
+
 export default function Token({token: {text, kana, base, tag, info = ''}}: IProps) {
   const [translation, setTranslation] = useState()
 
@@ -54,7 +56,7 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
   return (
     <Popover placement="right" content={tooltip} onOpenChange={() => handleOpenTooltip(base)}>
       <span className="word" style={{'--color': wordColorMap[tag] || defaultWordColor} as React.CSSProperties}>
-        <ruby>{text}<rt>{text === kana ? '' : kana}</rt></ruby>
+        <ruby>{text}<rt>{(text === kana || isPunct(tag)) ? '' : kana}</rt></ruby>
       </span>
     </Popover>
   )
