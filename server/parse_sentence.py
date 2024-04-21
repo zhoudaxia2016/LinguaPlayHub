@@ -1,12 +1,6 @@
 import spacy
 import jaconv
-import time
-
-import MeCab
-import ipadic
-CHASEN_ARGS = r' -F "%m\t%f[7]\t%f[6]\t%F-[0,1,2,3]\t%f[4]\t%f[5]\n"'
-CHASEN_ARGS += r' -U "%m\t%m\t%m\t%F-[0,1,2,3]\t\t\n"'
-tagger1 = MeCab.Tagger(ipadic.MECAB_ARGS + CHASEN_ARGS)
+import re
 
 nlp = spacy.load("ja_core_news_lg")
 
@@ -14,17 +8,18 @@ skip_heads = ['advcl', 'obj', 'nmod', 'acl', 'obl', 'cc', 'cop', 'nsubj']
 skip_heads2 = ['compound']
 
 def handle_token(token):
-    result = tagger1.parse(token.text).split('\t')
-    info = result[3]
-    if token.tag == 'VERB':
-        info = info + result[4].split('・')[0]
+    info = token.pos_
+    kana = str(token.text)
+    result = re.match(r'(Inflection=([^|]+)\|)?Reading=([^|]+)', str(token.morph))
+    if result is not None:
+        info = result[2]
+        kana = result[3]
     return {
         'text': token.text,
-        'tag1': info,
-        'tag2': token.pos_,
-        'base1': result[2],
-        'base2': token.lemma_,
-        'kana': jaconv.kata2hira(result[1]),
+        'tag': token.pos_,
+        'info': info,
+        'kana': jaconv.kata2hira(kana),
+        'base': token.lemma_,
     }
 
 

@@ -5,11 +5,10 @@ import {defaultWordColor, WORD_TAG, wordColorMap} from './config'
 
 export interface IToken {
   text: string,
-  base1: string,
-  base2: string,
-  tag1: string,
-  tag2: string,
+  base: string,
+  tag: string,
   kana: string,
+  info: string,
 }
 
 interface IProps {
@@ -18,7 +17,7 @@ interface IProps {
 
 const dictMap = new Map()
 
-export default function Token({token: {text, kana, base1, tag1, tag2}}: IProps) {
+export default function Token({token: {text, kana, base, tag, info = ''}}: IProps) {
   const [translation, setTranslation] = useState()
 
   const handleOpenTooltip = useCallback(async (word) => {
@@ -34,8 +33,8 @@ export default function Token({token: {text, kana, base1, tag1, tag2}}: IProps) 
 
   const tooltip = (
     <div className="word-tooltip">
-      <div className="word-base">{base1}</div>
-      <div className="word-tag">{tag1}</div>
+      <div className="word-base">{base}</div>
+      <div className="word-tag">{info}</div>
       {
         translation === undefined && <div>加载中...</div>
       }
@@ -52,11 +51,10 @@ export default function Token({token: {text, kana, base1, tag1, tag2}}: IProps) 
     </div>
   )
 
-  const isVerb = tag1.split('-')[0] === '動詞'
   return (
-    <Popover placement="right" content={tooltip} onOpenChange={() => handleOpenTooltip(base1)}>
-      <span className="word" style={{'--color': wordColorMap[tag2] || defaultWordColor} as React.CSSProperties}>
-        <ruby>{text}<rt>{text === kana ? '' : (isVerb ? base1 : kana)}</rt></ruby>
+    <Popover placement="right" content={tooltip} onOpenChange={() => handleOpenTooltip(base)}>
+      <span className="word" style={{'--color': wordColorMap[tag] || defaultWordColor} as React.CSSProperties}>
+        <ruby>{text}<rt>{text === kana ? '' : kana}</rt></ruby>
       </span>
     </Popover>
   )
