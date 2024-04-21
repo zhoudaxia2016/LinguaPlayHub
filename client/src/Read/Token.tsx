@@ -21,14 +21,14 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
   const [translation, setTranslation] = useState()
 
   const handleOpenTooltip = useCallback(async (word) => {
-    const translation = dictMap.get(word)
+    let translation = dictMap.get(word)
     if (!translation) {
       const json = await queryWord(word, ['9fde35a44061a9e2'])
       const result = json.filter(_ => _.html)[0]
-      const translation = result?.html || ''
+      translation = result?.html || ''
       dictMap.set(word, translation)
-      setTranslation(translation)
     }
+    setTranslation(translation)
   }, [])
 
   const tooltip = (

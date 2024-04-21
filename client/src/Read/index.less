@@ -20,19 +20,19 @@
   width: 50%;
   display: flex;
   flex-wrap: wrap;
+  gap: 12px;
   margin: 30px;
 }
 
 .sentence-section {
-  display: inline-block;
+  display: inline-flex;
+  gap: 4px;
   position: relative;
   font-size: 28px;
   font-weight: bold;
   height: 40px;
   padding: 0 10px;
   z-index: 0;
-  margin-bottom: 12px;
-  margin-right: 12px;
   &::before {
     content: '';
     position: absolute;
@@ -64,7 +64,7 @@
       position: absolute;
       height: 6px;
       width: 100%;
-      bottom: 4px;
+      bottom: 6px;
       left: 0;
       background: var(--color);
       border-radius: 4px;
