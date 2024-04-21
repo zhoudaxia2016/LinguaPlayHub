@@ -7,7 +7,8 @@ Base = declarative_base()
 
 class TextTag(Base):
     __tablename__ = "text_tag"
-    title = Column(String(24), index=True, unique=True, primary_key=True)
+    id = Column(Integer, index=True, unique=True, autoincrement=True, primary_key=True)
+    title = Column(String(24), unique=True)
     color = Column(String(7))
 
 class Text(Base):

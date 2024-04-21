@@ -1,11 +1,16 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useContext, useEffect, useMemo} from 'react'
+import {ITag, ReadContext} from './'
 import {Button, Tag} from 'antd'
 
-export default function TextList({onClickText, onDeleteText, tags, texts}) {
-  const tagColorMap: Map<string, string> = useMemo(() => {
-    return new Map(tags.map(tag => ([tag.title, tag.color])))
+export default function TextList({onClickText, onDeleteText, texts}) {
+  const {tags} = useContext(ReadContext)
+  const tagColorMap: Map<number, ITag> = useMemo(() => {
+    return new Map(tags.map(tag => ([tag.id, tag])))
   }, [tags])
 
+  useEffect(() => {
+    console.log('zz_debug')
+  }, [])
   const handleDelete = useCallback((e, id) => {
     e.stopPropagation()
     onDeleteText(id)
@@ -19,11 +24,16 @@ export default function TextList({onClickText, onDeleteText, tags, texts}) {
           <div className="text-title">
             {text.title}
             {
-              text.tags &&
+              text.tags.length > 0 &&
               <div className="text-tags">
-                {JSON.parse(text.tags).map(tag => (
-                  <Tag key={tag} color={tagColorMap.get(tag)}>{tag}</Tag>
-                ))}
+                {
+                  text.tags.map(id => {
+                    const tag = tagColorMap.get(id)
+                    return (
+                      <Tag key={id} color={tag?.color}>{tag?.title}</Tag>
+                    )
+                  })
+                }
               </div>
             }
           </div>

@@ -53,6 +53,7 @@ def parse_sentence(item: ParseTextParams):
     return list(map(lambda s: parse(s), sentences))
 
 class TextParams(BaseModel):
+    id: int = None
     title: str
     tags: str = None
     desc: str = None
@@ -61,8 +62,16 @@ class TextParams(BaseModel):
 
 @app.post("/api/text")
 def save_text(item: TextParams, db=Depends(get_db)):
-    db.add(Text(title=item.title, tags=item.tags, desc=item.desc, content=item.content, tokenization=item.tokenization))
+    if item.id:
+        text = db.query(Text).filter_by(id=item.id).first()
+        for key, value in item.dict().items():
+            setattr(text, key, value) if value and key != 'id' else None
+    else:
+        text = Text(title=item.title, tags=item.tags, desc=item.desc, content=item.content, tokenization=item.tokenization)
+        db.add(text)
     db.commit()
+    db.refresh(text)
+    return text
 
 class TextDeleteParams(BaseModel):
     id: int

@@ -1,28 +1,60 @@
 import './index.less'
-import React, {useCallback, useState, useRef} from 'react'
+import React, {useCallback, useState, useRef, useMemo, useEffect} from 'react'
 import Section from './Section'
 import Aside from './Aside'
 
-export default function Read() {
-  const [sentences, setSentences] = useState<any[]>([])
-  const handleParse = useCallback((sentences) => {
-    setSentences(sentences)
-  }, [])
+export interface ITag {
+  id: number,
+  title: string,
+  color: string,
+}
 
-  const gotoText = useCallback(({tokenization}) => {
-    setSentences(JSON.parse(tokenization))
+interface IContext {
+  tags: ITag[],
+  setTags: (tags: ITag[]) => void,
+  text: any,
+  setText: any,
+}
+
+export const ReadContext = React.createContext<IContext>({
+  tags: [],
+  setTags: () => {},
+  text: null,
+  setText: null,
+})
+
+export default function Read() {
+  const [tags, setTags] = useState<ITag[]>([])
+  const [text, setText] = useState<any>({})
+
+  const state = useMemo(() => {
+    return {
+      tags,
+      setTags,
+      text,
+      setText,
+    }
+  }, [tags, text])
+
+  useEffect(() => {
+    fetch('/api/text/tag').then(async res => {
+        const json = await res.json()
+        setTags(json)
+    })
   }, [])
 
   return (
-    <div className="read">
-      <Aside sentences={sentences} onParse={handleParse} onClickText={gotoText}/>
-      {sentences.map((sentence, i) => (
-        <div key={i} className="text-sentence">
-          {sentence.map((section, j) => (
-            <Section key={j} tokens={section.tokens}/>
-          ))}
-        </div>
-      ))}
-    </div>
+    <ReadContext.Provider value={state}>
+      <div className="read">
+        <Aside/>
+        {text.tokenization && text.tokenization.map((sentence, i) => (
+          <div key={i} className="text-sentence">
+            {sentence.map((section, j) => (
+              <Section key={j} tokens={section.tokens}/>
+            ))}
+          </div>
+        ))}
+      </div>
+    </ReadContext.Provider>
   )
 }
