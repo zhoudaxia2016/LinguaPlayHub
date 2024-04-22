@@ -45,7 +45,7 @@ def delete_text(item: TextDeleteParams, db=Depends(get_db)):
     db.commit()
 
 @router.get("/detail")
-def get_text(id: str = None, db=Depends(get_db)):
+def get_text(id: int = None, db=Depends(get_db)):
     if id:
         return db.query(Text).filter_by(id=id).first()
     else:

@@ -1,7 +1,8 @@
 import './index.less'
-import React, {useCallback, useState, useRef, useMemo, useEffect} from 'react'
+import React, {useState, useMemo, useEffect} from 'react'
 import Section from './Section'
 import Aside from './Aside'
+import {useSearchParams} from 'react-router-dom'
 
 export interface ITag {
   id: number,
@@ -26,6 +27,7 @@ export const ReadContext = React.createContext<IContext>({
 export default function Read() {
   const [tags, setTags] = useState<ITag[]>([])
   const [text, setText] = useState<any>({})
+  const [searchParams] = useSearchParams()
 
   const state = useMemo(() => {
     return {
@@ -37,6 +39,15 @@ export default function Read() {
   }, [tags, text])
 
   useEffect(() => {
+    const id = searchParams.get('id')
+    if (id) {
+      fetch('/api/text/detail?id=' + id).then(async res => {
+        const json = await res.json()
+        json.tags = JSON.parse(json.tags)
+        json.tokenization = JSON.parse(json.tokenization)
+        setText(json)
+      })
+    }
     fetch('/api/text/tag').then(async res => {
         const json = await res.json()
         setTags(json)

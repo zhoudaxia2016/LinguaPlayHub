@@ -4,12 +4,14 @@ import TextSave from './TextSave'
 import TextList from './TextList'
 import MenuContent from './MenuContent'
 import {ReadContext} from './'
+import {useSearchParams} from 'react-router-dom'
 
 const { TextArea } = Input
 
 export default function Aside() {
   const [texts, setTexts] = useState<any[]>([])
   const {tags, text, setText} = useContext(ReadContext)
+  const [_, setSearchParams] = useSearchParams()
 
   const fetchTextList = useCallback(() => {
     fetch('/api/text/detail').then(async res => {
@@ -94,6 +96,7 @@ export default function Aside() {
     const onClick = (text) => {
       close()
       setText({...text, tokenization: JSON.parse(text.tokenization)})
+      setSearchParams('id=' + text.id)
     }
     const onDelete = (id) => {
       close()

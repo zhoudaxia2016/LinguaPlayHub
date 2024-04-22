@@ -8,9 +8,6 @@ export default function TextList({onClickText, onDeleteText, texts}) {
     return new Map(tags.map(tag => ([tag.id, tag])))
   }, [tags])
 
-  useEffect(() => {
-    console.log('zz_debug')
-  }, [])
   const handleDelete = useCallback((e, id) => {
     e.stopPropagation()
     onDeleteText(id)
