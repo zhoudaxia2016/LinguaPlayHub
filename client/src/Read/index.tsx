@@ -3,6 +3,7 @@ import React, {useState, useMemo, useEffect} from 'react'
 import Text from './Text'
 import Aside from './Aside'
 import {useSearchParams} from 'react-router-dom'
+import {getText, getTags} from './api'
 
 export interface ITag {
   id: number,
@@ -41,16 +42,14 @@ export default function Read() {
   useEffect(() => {
     const id = searchParams.get('id')
     if (id) {
-      fetch('/api/text/detail?id=' + id).then(async res => {
-        const json = await res.json()
-        json.tags = JSON.parse(json.tags)
-        json.tokenization = JSON.parse(json.tokenization)
-        setText(json)
+      getText(id).then(text => {
+        text.tags = JSON.parse(text.tags)
+        text.tokenization = JSON.parse(text.tokenization)
+        setText(text)
       })
     }
-    fetch('/api/text/tag').then(async res => {
-        const json = await res.json()
-        setTags(json)
+    getTags().then(tags => {
+      setTags(tags)
     })
   }, [])
 

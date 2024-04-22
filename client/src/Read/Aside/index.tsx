@@ -6,6 +6,7 @@ import TextList from './TextList'
 import MenuContent from './MenuContent'
 import {ReadContext} from '../'
 import {useSearchParams} from 'react-router-dom'
+import {getText, deleteText, parseText as parseTextApi, saveText} from '../api'
 
 const { TextArea } = Input
 
@@ -15,38 +16,25 @@ export default function Aside() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [messageApi, contextHolder] = message.useMessage()
 
-  const fetchTextList = useCallback(() => {
-    fetch('/api/text/detail').then(async res => {
-      const json = await res.json()
-      setTexts(json.map(_ => ({
-        ..._,
-        tags: _.tags ? JSON.parse(_.tags) : []
-      })))
-    })
+  const fetchTextList = useCallback(async () => {
+    const texts = await getText()
+    setTexts(texts.map(_ => ({
+      ..._,
+      tags: _.tags ? JSON.parse(_.tags) : []
+    })))
   }, [])
 
   useEffect(() => {
     fetchTextList()
   }, [fetchTextList])
 
-  const parseText = useCallback((e) => {
+  const parseText = useCallback(async (e) => {
     const content = e.target.value
-    fetch('/api/text/parse', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({text: content})
-    }).then(async res => {
-        const json = await res.json()
-        setText({
-          content: content,
-          tokenization: json,
-        })
-      })
+    const result = await parseTextApi(content)
+    setText({content, tokenization: result})
   }, [])
 
-  const handleSave = useCallback((info) => {
+  const handleSave = useCallback(async (info) => {
     const tagIds = info.tags || []
     const desc = info.desc || ''
     const title = info.title
@@ -54,28 +42,20 @@ export default function Aside() {
       messageApi.open({type: 'warning', content: '请先解析一篇文章'})
       return
     }
-    fetch('/api/text/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title,
-        desc,
-        content: text.content,
-        id: text.id,
-        tags: JSON.stringify(tagIds),
-        tokenization: JSON.stringify(text.tokenization),
-      })
-    }).then(async res => {
-        const json = await res.json()
-        if (json.tokenization) {
-          json.tokenization = JSON.parse(json.tokenization)
-          json.tags = JSON.parse(json.tags)
-        }
-        setText(json)
-        setSearchParams('id=' + json.id)
-      })
+    const result = await saveText({
+      title,
+      desc,
+      content: text.content,
+      id: text.id,
+      tags: JSON.stringify(tagIds),
+      tokenization: JSON.stringify(text.tokenization),
+    })
+    if (result.tokenization) {
+      result.tokenization = JSON.parse(result.tokenization)
+      result.tags = JSON.parse(result.tags)
+    }
+    setText(result)
+    setSearchParams('id=' + result.id)
   }, [text, tags])
 
   const renderParseMenu = useCallback(close => {
@@ -114,13 +94,7 @@ export default function Aside() {
         setSearchParams('')
         setText({})
       }
-      fetch('/api/text/delete', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({id})
-      })
+      deleteText(id)
     }
     return (
       <TextList texts={texts} onClickText={onClick} onDeleteText={onDelete}/>

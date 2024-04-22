@@ -24,7 +24,7 @@ export default function Nav() {
       <div className="nav-list" style={style}>
         {
           linkConfig.map(({title, link}, i) => (
-            <div className="nav-item" style={{'--link-index': i} as React.CSSProperties}>
+            <div key={i} className="nav-item" style={{'--link-index': i} as React.CSSProperties}>
               <NavLink className="nav-link" to={link}>{title}</NavLink>
             </div>
           ))

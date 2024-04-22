@@ -20,6 +20,9 @@
     "noEmit": true,
     "jsx": "react",
     "noImplicitAny": false
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
   "include": [
     "src"
