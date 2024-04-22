@@ -1,0 +1,33 @@
+.text-list {
+  width: 500px;
+}
+.text-list-item {
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #294636;
+  cursor: pointer;
+  .text-title {
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .text-tags {
+    margin-left: 8px;
+  }
+  .text-title,
+  .text-desc {
+    margin-bottom: 4px;
+  }
+
+  &:hover {
+    .delete-btn {
+      display: block;
+    }
+  }
+  .delete-btn {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 10px;
+  }
+}

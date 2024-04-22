@@ -1,9 +1,10 @@
+import './index.less'
 import {Button, Input, message} from 'antd'
 import React, {useCallback, useContext, useEffect, useState} from 'react'
 import TextSave from './TextSave'
 import TextList from './TextList'
 import MenuContent from './MenuContent'
-import {ReadContext} from './'
+import {ReadContext} from '../'
 import {useSearchParams} from 'react-router-dom'
 
 const { TextArea } = Input

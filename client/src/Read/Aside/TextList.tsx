@@ -1,5 +1,5 @@
-import React, {useCallback, useContext, useEffect, useMemo} from 'react'
-import {ITag, ReadContext} from './'
+import React, {useCallback, useContext, useMemo} from 'react'
+import {ITag, ReadContext} from '../'
 import {Button, Tag} from 'antd'
 
 export default function TextList({onClickText, onDeleteText, texts}) {

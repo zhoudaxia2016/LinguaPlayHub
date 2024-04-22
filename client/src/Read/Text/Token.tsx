@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react'
 import {Popover} from 'antd'
-import {queryWord} from '../WordSearch/utils'
-import {defaultWordColor, WORD_TAG, wordColorMap} from './config'
+import {queryWord} from '../../WordSearch/utils'
+import {defaultWordColor, wordColorMap} from './config'
 
 export interface IToken {
   text: string,

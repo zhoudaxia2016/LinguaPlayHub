@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useEffect, useMemo} from 'react'
 import {Form, Input, Button, Select, Tag} from 'antd'
 import type { SelectProps } from 'antd'
-import {ReadContext} from './'
+import {ReadContext} from '../'
 import {useForm} from 'antd/es/form/Form';
 
 type TagRender = SelectProps['tagRender'];

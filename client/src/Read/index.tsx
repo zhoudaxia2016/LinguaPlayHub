@@ -1,6 +1,6 @@
 import './index.less'
 import React, {useState, useMemo, useEffect} from 'react'
-import Section from './Section'
+import Text from './Text'
 import Aside from './Aside'
 import {useSearchParams} from 'react-router-dom'
 
@@ -61,7 +61,7 @@ export default function Read() {
         {text.tokenization && text.tokenization.map((sentence, i) => (
           <div key={i} className="text-sentence">
             {sentence.map((section, j) => (
-              <Section key={j} tokens={section.tokens}/>
+              <Text key={j} tokens={section.tokens}/>
             ))}
           </div>
         ))}
