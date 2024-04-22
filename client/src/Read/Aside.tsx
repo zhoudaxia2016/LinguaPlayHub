@@ -11,7 +11,7 @@ const { TextArea } = Input
 export default function Aside() {
   const [texts, setTexts] = useState<any[]>([])
   const {tags, text, setText} = useContext(ReadContext)
-  const [_, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const fetchTextList = useCallback(() => {
     fetch('/api/text/detail').then(async res => {
@@ -68,6 +68,7 @@ export default function Aside() {
           json.tags = JSON.parse(json.tags)
         }
         setText(json)
+        setSearchParams('id=' + json.id)
       })
   }, [text, tags])
 
@@ -103,6 +104,10 @@ export default function Aside() {
       const index = texts.find(_ => _.id === id)
       texts.splice(index, 1)
       setTexts(texts)
+      if (searchParams.get('id') === String(id)) {
+        setSearchParams('')
+        setText({})
+      }
       fetch('/api/text/delete', {
         method: 'POST',
         headers: {
@@ -114,7 +119,7 @@ export default function Aside() {
     return (
       <TextList texts={texts} onClickText={onClick} onDeleteText={onDelete}/>
     )
-  }, [tags, texts])
+  }, [tags, texts, searchParams])
 
   const handleToggleTextList = useCallback((isOpen) => {
     if (isOpen) {
