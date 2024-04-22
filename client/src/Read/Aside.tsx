@@ -1,5 +1,5 @@
-import {Button, Input} from 'antd'
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react'
+import {Button, Input, message} from 'antd'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import TextSave from './TextSave'
 import TextList from './TextList'
 import MenuContent from './MenuContent'
@@ -12,6 +12,7 @@ export default function Aside() {
   const [texts, setTexts] = useState<any[]>([])
   const {tags, text, setText} = useContext(ReadContext)
   const [searchParams, setSearchParams] = useSearchParams()
+  const [messageApi, contextHolder] = message.useMessage()
 
   const fetchTextList = useCallback(() => {
     fetch('/api/text/detail').then(async res => {
@@ -48,6 +49,10 @@ export default function Aside() {
     const tagIds = info.tags || []
     const desc = info.desc || ''
     const title = info.title
+    if (!text.content) {
+      messageApi.open({type: 'warning', content: '请先解析一篇文章'})
+      return
+    }
     fetch('/api/text/save', {
       method: 'POST',
       headers: {
@@ -129,6 +134,7 @@ export default function Aside() {
 
   return (
     <div className="read-aside">
+      {contextHolder}
       <MenuContent renderContent={renderParseMenu}>
         <Button className="parse-btn" type="primary">解析文章</Button>
       </MenuContent>
