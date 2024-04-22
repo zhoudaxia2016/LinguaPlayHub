@@ -20,7 +20,7 @@ function App() {
     setSearchWord(e.target.value)
   }, [])
   const handleSearch = useCallback((word: string) => {
-    fetch('/api/query', {
+    fetch('/api/dict/query', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

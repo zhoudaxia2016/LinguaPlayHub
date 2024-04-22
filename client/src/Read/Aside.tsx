@@ -12,7 +12,7 @@ export default function Aside() {
   const {tags, text, setText} = useContext(ReadContext)
 
   const fetchTextList = useCallback(() => {
-    fetch('/api/text').then(async res => {
+    fetch('/api/text/detail').then(async res => {
       const json = await res.json()
       setTexts(json.map(_ => ({
         ..._,
@@ -46,7 +46,7 @@ export default function Aside() {
     const tagIds = info.tags || []
     const desc = info.desc || ''
     const title = info.title
-    fetch('/api/text', {
+    fetch('/api/text/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
