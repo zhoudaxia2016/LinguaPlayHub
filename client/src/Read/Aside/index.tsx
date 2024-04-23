@@ -1,14 +1,13 @@
 import './index.less'
-import {Button, Input, message} from 'antd'
+import {Button, message} from 'antd'
 import React, {useCallback, useContext, useEffect, useState} from 'react'
 import TextSave from './TextSave'
 import TextList from './TextList'
+import TextParse from './TextParse'
 import MenuContent from './MenuContent'
 import {ReadContext} from '../'
 import {useSearchParams} from 'react-router-dom'
 import {getText, deleteText, parseText as parseTextApi, saveText} from '../api'
-
-const { TextArea } = Input
 
 export default function Aside() {
   const [texts, setTexts] = useState<any[]>([])
@@ -29,7 +28,7 @@ export default function Aside() {
   }, [fetchTextList])
 
   const parseText = useCallback(async (e) => {
-    const content = e.target.value
+    const content = e.text
     const result = await parseTextApi(content)
     setText({content, tokenization: result})
   }, [])
@@ -59,14 +58,11 @@ export default function Aside() {
   }, [text, tags])
 
   const renderParseMenu = useCallback(close => {
-    const onPressEnter = (e) => {
+    const handleParse = (e) => {
       close()
       parseText(e)
     }
-    return (
-      <TextArea size="large" allowClear style={{ width: 500 }} rows={20}
-        onPressEnter={onPressEnter}></TextArea>
-    )
+    return <TextParse onSubmit={handleParse}/>
   }, [parseText])
 
   const renderSaveMenu = useCallback(close => {
