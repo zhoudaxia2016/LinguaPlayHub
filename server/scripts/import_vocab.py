@@ -1,5 +1,6 @@
 import pandas as pd
 import sys
+import datetime
 sys.path.append('../')
 from models import Vocab
 from routers.utils import get_db
@@ -19,6 +20,7 @@ for i in range(1, len(sheet)):
     if pd.isna(kana):
         kana = ''
     status = 100 if sheet.iloc[i, 2] else 10
-    db.add(Vocab(name=name, kana=kana, status=status))
+    finish_date = datetime.datetime.today() if status == 100 else None
+    db.add(Vocab(name=name, kana=kana, status=status, finish_date=finish_date))
 
 db.commit()
