@@ -29,6 +29,7 @@ export default function Vocab() {
     }
     return [
       {title: '单词', dataIndex: 'name'},
+      {title: '假名', dataIndex: 'kana'},
       {title: '认识程度', dataIndex: 'status', render: (_, {status}) => <Progress type="circle" percent={status} size={30} />},
       {title: '创建日期', dataIndex: 'create_date'},
       {title: '完成日期', dataIndex: 'finish_date'},

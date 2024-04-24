@@ -8,6 +8,7 @@ class Vocab(Base):
     __tablename__ = "vocab"
     id = Column(Integer, index=True, unique=True, autoincrement=True, primary_key=True)
     name = Column(String(64), index=True, unique=True)
+    kana = Column(String(100), index=True)
     create_date = Column(Date(), default=func.current_date())
     finish_date = Column(Date())
     status = Column(Integer())

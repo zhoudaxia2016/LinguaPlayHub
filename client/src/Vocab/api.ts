@@ -2,8 +2,8 @@ import createApi from '~/api'
 
 const api = createApi('vocab')
 
-export async function addWord(name) {
-  const res = await api.post('/add', {name})
+export async function addWord(name, kana?) {
+  const res = await api.post('/add', {name, kana})
   return res.data
 }
 
@@ -17,8 +17,8 @@ export async function deleteWord(id) {
   return res.data
 }
 
-export async function searchWord(name) {
-  const res = await api.get('/search', {params: {name}})
+export async function searchWord(name, iskana?) {
+  const res = await api.get('/search', {params: {name, iskana}})
   return res.data
 }
 

@@ -35,8 +35,8 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
   }, [])
 
   const handleLikeWord = useCallback(() => {
-    addWord(base)
-  }, [base])
+    addWord(base, kana)
+  }, [base, kana])
 
   const tooltip = (
     <div className="word-tooltip">

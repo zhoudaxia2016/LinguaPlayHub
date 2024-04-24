@@ -8,10 +8,11 @@ router = APIRouter(prefix='/api/vocab')
 
 class AddParams(BaseModel):
     name: str
+    kana: str = None
 
 @router.post("/add")
 def add(item: AddParams, db=Depends(get_db)):
-    word = Vocab(name=item.name, status=10)
+    word = Vocab(name=item.name, kana=item.kana, status=10)
     db.add(word)
     db.commit()
     db.refresh(word)
@@ -45,8 +46,11 @@ class SearchParams(BaseModel):
     name: str
 
 @router.get("/search")
-def search(name: str, db=Depends(get_db)):
-    word = db.query(Vocab).filter_by(name=name).first()
+def search(name: str, iskana: bool = False, db=Depends(get_db)):
+    if iskana:
+        word = db.query(Vocab).filter_by(name=name).first()
+    else:
+        word = db.query(Vocab).filter_by(kana=name).first()
     return word
 
 @router.get("/all")
