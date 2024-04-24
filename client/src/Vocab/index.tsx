@@ -13,6 +13,8 @@ interface IWord {
 
 export default function Vocab() {
   const [data, setData] = useState<IWord[]>([])
+  const [count, setCount] = useState(0)
+  const [finishCount, setFinishCount] = useState(0)
 
   const fetchData = useCallback(() => {
     getVocab().then(data => setData(data))
@@ -46,9 +48,34 @@ export default function Vocab() {
   useEffect(() => {
     fetchData()
   }, [])
+
+  useEffect(() => {
+    const count = data.length
+    let finishCount = 0
+    data.forEach(({ status }) => {
+      finishCount += status === 100 ? 1 : 0
+    })
+    setCount(count)
+    setFinishCount(finishCount)
+  }, [data])
+
   return (
     <div className="vocab">
-      <Table columns={columns} dataSource={data} rowKey="id"/>
+      <Table columns={columns} dataSource={data} rowKey="id" pagination={{pageSize: 12}}
+             sticky
+             summary={() =>
+              <Table.Summary fixed="top">
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={0}>
+                    <span className="vocab-summary-item">总数: {count}</span>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={1}>
+                    <span className="vocab-summary-item">已掌握: {finishCount}</span>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </Table.Summary>
+             }
+      />
     </div>
   )
 }
