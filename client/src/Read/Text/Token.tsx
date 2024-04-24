@@ -1,7 +1,8 @@
 import React, {useCallback, useState} from 'react'
-import {Popover} from 'antd'
+import {Button, Popover} from 'antd'
 import {queryWord} from '../../WordSearch/utils'
 import {defaultWordColor, wordColorMap} from './config'
+import {addWord} from '~/Vocab/api'
 
 export interface IToken {
   text: string,
@@ -33,9 +34,13 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
     setTranslation(translation)
   }, [])
 
+  const handleLikeWord = useCallback(() => {
+    addWord(base)
+  }, [base])
+
   const tooltip = (
     <div className="word-tooltip">
-      <div className="word-base">{base}</div>
+      <div className="word-base">{base}<Button onClick={handleLikeWord}>收藏</Button></div>
       <div className="word-tag">{info}</div>
       {
         translation === undefined && <div>加载中...</div>

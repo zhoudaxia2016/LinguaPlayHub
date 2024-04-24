@@ -6,6 +6,7 @@ const linkConfig = [
   {title: '首页', link: '/',},
   {title: '查词', link: 'wordsearch'},
   {title: '悦读', link: 'read'},
+  {title: '词汇', link: 'vocab'},
 ]
 
 const linkNum = linkConfig.length
