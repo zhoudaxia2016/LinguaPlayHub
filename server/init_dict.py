@@ -21,6 +21,6 @@ for dict in dict_files:
     entry = len([*mdx.items()])
     filename = dict
     session.add(Dict(id=id, title=title, description=description,
-                     create_date=create_date, entry=entry, filename=filename))
+                     create_date=create_date, entry=entry, filename=filename, style=""))
     session.commit()
     session.close()

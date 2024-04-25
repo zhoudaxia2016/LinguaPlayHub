@@ -22,9 +22,10 @@ def query(item: QueryParams, db=Depends(get_db)):
         if dict:
             result = queryWord(word, dict)
             if isinstance(result, str):
-                allResult.append({"html": result, 'title': title})
+                allResult.append({"html": result, 'title': title, 'id': dictId})
             else:
                 result['title'] = title
+                result['id'] = dictId
                 allResult.append(result)
     return allResult
 
@@ -32,3 +33,13 @@ def query(item: QueryParams, db=Depends(get_db)):
 def get_all_dicts(db=Depends(get_db)):
     dicts = db.query(Dict).all()
     return dicts
+
+class UpdateStyleParams(BaseModel):
+    id: str
+    style: str
+
+@router.post('/style/update')
+def update_style(item: UpdateStyleParams, db=Depends(get_db)):
+    dict = db.query(Dict).filter_by(id=item.id).first()
+    dict.style = item.style
+    db.commit()

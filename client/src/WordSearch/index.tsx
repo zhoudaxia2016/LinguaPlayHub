@@ -1,7 +1,8 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState, useCallback, useEffect} from 'react'
 import './index.css'
 import Header from './Header'
 import SearchResult from './SearchResult'
+import {updateStyle} from './api'
 
 const dictConfigJSON = localStorage.getItem('LanguaPlayHub-dictConfig')
 const dictConfig: any = dictConfigJSON ? JSON.parse(dictConfigJSON) : {}
@@ -13,8 +14,20 @@ window.addEventListener('beforeunload', () => {
 
 function App() {
   const [activeDicts, setActiveDicts] = useState(dictConfig.activeDicts)
+  const [dicts, setDicts] = useState<any[]>([])
   const [searchWord, setSearchWord] = useState('')
   const [searchResult, setSearchResult] = useState([])
+
+  const fetchDicts = useCallback(() => {
+    fetch('/api/dict/all').then(async (res) => {
+      const json = await res.json()
+      setDicts(json)
+    })
+  }, [])
+
+  useEffect(() => {
+    fetchDicts()
+  }, [])
 
   const handleSearchWordChange = useCallback((e) => {
     setSearchWord(e.target.value)
@@ -41,15 +54,21 @@ function App() {
     dictConfig.activeDicts = dicts
   }, [])
 
-  const empty = searchResult.length === 0
+  const handleUpdateStyle = useCallback(async (id, style) => {
+    await updateStyle(id, style)
+    fetchDicts()
+  }, [])
+
+  const empty = !searchResult.some((_: any) => _.html || _.contains?.length || _.startsWith?.length)
 
   return (
     <div className="word-search">
-      <Header activeDicts={activeDicts} searchWord={searchWord} onSearch={handleSearch}
-              onActiveDictsChange={handleActiveDictsChange} onSearchWordChange={handleSearchWordChange}/>
+      <Header dicts={dicts} activeDicts={activeDicts} searchWord={searchWord} onSearch={handleSearch}
+              onActiveDictsChange={handleActiveDictsChange} onSearchWordChange={handleSearchWordChange}
+              onUpdateStyle={handleUpdateStyle}/>
       <div className="query-result-wrapper">
         {empty && <div className="no-result">无结果</div>}
-        {!empty && <SearchResult searchResult={searchResult} onClickCloseEntry={handleClickCloseEntry}/>}
+        <SearchResult activeDicts={activeDicts} dicts={dicts} searchResult={searchResult} onClickCloseEntry={handleClickCloseEntry}/>
       </div>
     </div>
   )

@@ -1,13 +1,17 @@
 .query-result {
   box-sizing: border-box;
-  padding: 20px;
   overflow: hidden;
   word-break: break-all;
+  height: 0;
   & > * {
     flex-shrink: 0;
     margin: auto;
   }
-  &:not(:last-child) {
+  &.has-result {
+    padding: 20px;
+    height: auto;
+  }
+  &.has-result:not(:last-child) {
     border-bottom: 5px solid var(--bg2);
   }
   .dict-name {

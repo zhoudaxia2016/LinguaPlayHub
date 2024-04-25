@@ -36,5 +36,5 @@ def queryWord(word, dictInfo):
     if match:
         word = match.group(1)
         return queryWord(word, dictInfo)
-    link_href_pat = r'(<link rel="stylesheet" href=")([^"]+)(" type="text/css"\s*>)'
+    link_href_pat = r'(<link rel="stylesheet"(\s+href="[^"]+")?(\s+type="text/css")?\s*>)'
     return re.sub(link_href_pat, '', html)
