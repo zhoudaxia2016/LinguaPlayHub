@@ -35,7 +35,7 @@ def get_all_dicts(db=Depends(get_db)):
     return dicts
 
 class UpdateStyleParams(BaseModel):
-    id: str
+    id: int
     style: str
 
 @router.post('/style/update')

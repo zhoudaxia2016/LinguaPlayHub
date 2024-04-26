@@ -62,7 +62,7 @@ export default function Header({searchWord, activeDicts, dicts, onSearch, onActi
   }, [dicts])
   const theme = {
     components: {
-      Popover: {zIndexPopup: 999}
+      Popover: {zIndexPopup: 8888}
     }
   }
   return (

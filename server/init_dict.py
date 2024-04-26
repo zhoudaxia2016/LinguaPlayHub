@@ -2,15 +2,16 @@ from sqlalchemy.orm import sessionmaker
 from models import connect, Dict
 from readmdict import MDX
 import os
-import hashlib
 
 dict_dir = './dicts'
-dict_files = os.listdir(dict_dir)
+dict_files = list(filter(lambda f: os.path.splitext(f)[1] == '.mdx', os.listdir(dict_dir)))
+print('所有词典文件：', dict_files)
 engine = connect()
 DBSession = sessionmaker(engine)
 session = DBSession()
 
 for dict in dict_files:
+    print('正在解析：', dict)
     dict_path = os.path.join(dict_dir, dict)
     mdx = MDX(dict_path)
     header = mdx.header
