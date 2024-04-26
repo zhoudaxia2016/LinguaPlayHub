@@ -9,7 +9,7 @@ router = APIRouter(prefix='/api/dict')
 
 class QueryParams(BaseModel):
     word: str
-    dictList: List[str]
+    dictList: List[int]
 
 @router.post("/query")
 def query(item: QueryParams, db=Depends(get_db)):

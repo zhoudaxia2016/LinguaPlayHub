@@ -13,7 +13,7 @@ window.addEventListener('beforeunload', () => {
 
 
 function App() {
-  const [activeDicts, setActiveDicts] = useState(dictConfig.activeDicts)
+  const [activeDicts, setActiveDicts] = useState(dictConfig.activeDicts || [])
   const [dicts, setDicts] = useState<any[]>([])
   const [searchWord, setSearchWord] = useState('')
   const [searchResult, setSearchResult] = useState([])
@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     fetchDicts()
-  }, [])
+  }, [fetchDicts])
 
   const handleSearchWordChange = useCallback((e) => {
     setSearchWord(e.target.value)

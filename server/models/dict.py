@@ -6,12 +6,12 @@ Base = declarative_base()
 
 class Dict(Base):
     __tablename__ = "dict"
-    id = Column(String(16), primary_key=True)
-    title = Column(String(64))
-    description = Column(String(256))
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    title = Column(String(130))
+    description = Column(LONGTEXT)
     create_date = Column(Date())
     entry = Column(Integer())
-    filename = Column(String(32))
+    filename = Column(String(130))
     style = Column(LONGTEXT, nullable=True)
 
 def create(engine):

@@ -15,12 +15,13 @@ for dict in dict_files:
     mdx = MDX(dict_path)
     header = mdx.header
     title = header[b'Title']
+    if session.query(Dict).filter_by(title=title).first():
+        continue
     description = header[b'Description']
-    id = hashlib.sha1(title + description).hexdigest()[:16]
     create_date = header[b'CreationDate']
     entry = len([*mdx.items()])
     filename = dict
-    session.add(Dict(id=id, title=title, description=description,
+    session.add(Dict(title=title, description=description,
                      create_date=create_date, entry=entry, filename=filename, style=""))
     session.commit()
     session.close()
