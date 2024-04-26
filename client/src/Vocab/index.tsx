@@ -57,6 +57,10 @@ const progressFilter = ({ setSelectedKeys, selectedKeys, confirm }) => {
   )
 }
 
+const dateSorter = (a, b) => {
+  return Number(new Date(a.create_date)) - Number(new Date(b.create_date))
+}
+
 export default function Vocab() {
   const [data, setData] = useState<IWord[]>([])
   const [count, setCount] = useState(0)
@@ -99,8 +103,8 @@ export default function Vocab() {
         onFilter: ({num = 0, isGt = true}: any, {status}) => isGt ? status >= num : status <= num,
         sorter: (a, b) => a.status - b.status,
       },
-      {title: '创建日期', dataIndex: 'create_date', sorter: (a, b) => a.status - b.status},
-      {title: '完成日期', dataIndex: 'finish_date', sorter: (a, b) => a.status - b.status},
+      {title: '创建日期', dataIndex: 'create_date', sorter: dateSorter},
+      {title: '完成日期', dataIndex: 'finish_date', sorter: dateSorter},
       {title: '操作', key: 'action', render: (
         (_, {id, status}) =>
           <Space>
