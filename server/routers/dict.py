@@ -7,6 +7,11 @@ from routers.query_dict import queryWord
 
 router = APIRouter(prefix='/api/dict')
 
+@router.get("/getdict")
+def get_dict(id: int, db=Depends(get_db)):
+    dict = db.query(Dict).filter_by(id=id).first()
+    return dict
+
 class QueryParams(BaseModel):
     word: str
     dictList: List[int]

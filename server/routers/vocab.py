@@ -12,6 +12,9 @@ class AddParams(BaseModel):
 
 @router.post("/add")
 def add(item: AddParams, db=Depends(get_db)):
+    word = db.query(Vocab).filter_by(name=item.name).first()
+    if word:
+        return {}
     word = Vocab(name=item.name, kana=item.kana, status=10)
     db.add(word)
     db.commit()

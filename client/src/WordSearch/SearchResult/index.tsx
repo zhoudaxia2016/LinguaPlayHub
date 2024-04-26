@@ -1,6 +1,6 @@
 import './index.less'
 import React, {useMemo} from 'react'
-import Content from './Content'
+import TranslateResult from '~/Component/TranslateResult'
 
 interface IResult {
   id: number,
@@ -26,7 +26,7 @@ export default function SearchResult({searchResult, dicts, activeDicts, onClickC
     return (
       <div key={id} className={cs}>
         <div className="dict-name">{title}</div>
-        <Content html={html} style={style}/>
+        <TranslateResult html={html} style={style}/>
         {
           startsWith.length > 0 &&
             <div className="query-result-close">

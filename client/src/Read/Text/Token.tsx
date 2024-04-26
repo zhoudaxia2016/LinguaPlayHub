@@ -1,9 +1,11 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {Popover} from 'antd'
 import {queryWord} from '../../WordSearch/utils'
 import {defaultWordColor, wordColorMap} from './config'
 import LikeWord from '~/Component/LikeWord'
 import Storage from '~/helper/Storage'
+import TranslateResult from '~/Component/TranslateResult'
+import {getDict} from '~/WordSearch/api'
 
 export interface IToken {
   text: string,
@@ -19,6 +21,10 @@ interface IProps {
 
 const dictMap = new Map()
 const configStorage = new Storage('userConfig', {readOnly: true})
+let dictStyle = ''
+getDict(configStorage.data.dictId).then(dict => {
+  dictStyle = dict.style
+})
 
 const isPunct = tag => ['PUNCT', 'SYM'].includes(tag)
 
@@ -53,7 +59,7 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
         translation &&
         <div>
           翻译结果
-          <div dangerouslySetInnerHTML={{__html: translation}}></div>
+          <TranslateResult html={translation} style={dictStyle}/>
         </div>
       }
     </div>
