@@ -7,6 +7,7 @@ const linkConfig = [
   {title: '查词', link: 'wordsearch'},
   {title: '悦读', link: 'read'},
   {title: '词汇', link: 'vocab'},
+  {title: '个人中心', link: 'user'},
 ]
 
 const linkNum = linkConfig.length

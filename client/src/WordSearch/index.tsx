@@ -5,13 +5,15 @@ import SearchResult from './SearchResult'
 import {updateStyle} from './api'
 import Storage from '~/helper/Storage'
 
-export const dictConfigStorage = new Storage('dictConfig', data => {
-  if (data.history) {
-    // 最多存100条搜索历史
-    data.history = data.history.slice(0, 100)
+export const dictConfigStorage = new Storage('dictConfig', {
+  onSave: data => {
+    if (data.history) {
+      // 最多存100条搜索历史
+      data.history = data.history.slice(0, 100)
+      return data
+    }
     return data
   }
-  return data
 })
 
 function App() {

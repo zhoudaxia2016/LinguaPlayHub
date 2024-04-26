@@ -3,6 +3,7 @@ import React from 'react'
 import WordSearch from './WordSearch'
 import Read from './Read'
 import Vocab from './Vocab'
+import User from './User'
 import Nav from './Nav'
 import {Routes, Route} from "react-router-dom"
 import {ConfigProvider} from 'antd'
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/wordsearch" element={<WordSearch/>}/>
             <Route path="/read" element={<Read/>}/>
             <Route path="/vocab" element={<Vocab/>}/>
+            <Route path="/user" element={<User/>}/>
           </Routes>
         </div>
       </div>

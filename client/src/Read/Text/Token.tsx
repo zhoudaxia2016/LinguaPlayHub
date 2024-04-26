@@ -1,8 +1,9 @@
 import React, {useCallback, useState} from 'react'
-import {Button, Popover} from 'antd'
+import {Popover} from 'antd'
 import {queryWord} from '../../WordSearch/utils'
 import {defaultWordColor, wordColorMap} from './config'
-import {addWord} from '~/Vocab/api'
+import LikeWord from '~/Component/LikeWord'
+import Storage from '~/helper/Storage'
 
 export interface IToken {
   text: string,
@@ -17,6 +18,7 @@ interface IProps {
 }
 
 const dictMap = new Map()
+const configStorage = new Storage('userConfig', {readOnly: true})
 
 const isPunct = tag => ['PUNCT', 'SYM'].includes(tag)
 
@@ -26,7 +28,10 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
   const handleOpenTooltip = useCallback(async (word) => {
     let translation = dictMap.get(word)
     if (!translation) {
-      const json = await queryWord(word, ['9fde35a44061a9e2'])
+      if (!configStorage.data.dictId) {
+        return
+      }
+      const json = await queryWord(word, [configStorage.data.dictId])
       const result = json.filter(_ => _.html)[0]
       translation = result?.html || ''
       dictMap.set(word, translation)
@@ -34,13 +39,9 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
     setTranslation(translation)
   }, [])
 
-  const handleLikeWord = useCallback(() => {
-    addWord(base, kana)
-  }, [base, kana])
-
-  const tooltip = (
+  const tooltip = configStorage.data.dictId ? (
     <div className="word-tooltip">
-      <div className="word-base">{base}<Button onClick={handleLikeWord}>收藏</Button></div>
+      <div className="word-base">{base}<LikeWord name={base} kana={kana}/></div>
       <div className="word-tag">{info}</div>
       {
         translation === undefined && <div>加载中...</div>
@@ -55,6 +56,11 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
           <div dangerouslySetInnerHTML={{__html: translation}}></div>
         </div>
       }
+    </div>
+  ) : (
+    <div className="word-tooltip">
+      <div className="word-base">{base}<LikeWord name={base} kana={kana}/></div>
+      <div>先配置默认词典</div>
     </div>
   )
 
