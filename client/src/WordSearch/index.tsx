@@ -3,17 +3,19 @@ import './index.css'
 import Header from './Header'
 import SearchResult from './SearchResult'
 import {updateStyle} from './api'
+import Storage from '~/helper/Storage'
 
-const dictConfigJSON = localStorage.getItem('LanguaPlayHub-dictConfig')
-const dictConfig: any = dictConfigJSON ? JSON.parse(dictConfigJSON) : {}
-
-window.addEventListener('beforeunload', () => {
-  localStorage.setItem('LanguaPlayHub-dictConfig', JSON.stringify(dictConfig))
+export const dictConfigStorage = new Storage('dictConfig', data => {
+  if (data.history) {
+    // 最多存100条搜索历史
+    data.history = data.history.slice(0, 100)
+    return data
+  }
+  return data
 })
 
-
 function App() {
-  const [activeDicts, setActiveDicts] = useState(dictConfig.activeDicts || [])
+  const [activeDicts, setActiveDicts] = useState(dictConfigStorage.data.activeDicts || [])
   const [dicts, setDicts] = useState<any[]>([])
   const [searchWord, setSearchWord] = useState('')
   const [searchResult, setSearchResult] = useState([])
@@ -51,7 +53,7 @@ function App() {
 
   const handleActiveDictsChange = useCallback((dicts) => {
     setActiveDicts(dicts)
-    dictConfig.activeDicts = dicts
+    dictConfigStorage.data.activeDicts = dicts
   }, [])
 
   const handleUpdateStyle = useCallback(async (id, style) => {
