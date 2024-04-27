@@ -50,10 +50,11 @@ class SearchParams(BaseModel):
 
 @router.get("/search")
 def search(name: str, iskana: bool = False, db=Depends(get_db)):
+    print(name, iskana)
     if iskana:
-        word = db.query(Vocab).filter_by(name=name).first()
-    else:
         word = db.query(Vocab).filter_by(kana=name).first()
+    else:
+        word = db.query(Vocab).filter_by(name=name).first()
     return word
 
 @router.get("/all")

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {Popover} from 'antd'
+import {Popover, Space} from 'antd'
 import {queryWord} from '../../WordSearch/utils'
 import {defaultWordColor, wordColorMap} from './config'
 import LikeWord from '~/Component/LikeWord'
@@ -47,7 +47,7 @@ export default function Token({token: {text, kana, base, tag, info = ''}}: IProp
 
   const tooltip = configStorage.data.dictId ? (
     <div className="word-tooltip">
-      <div className="word-base">{base}<LikeWord name={base} kana={kana}/></div>
+      <Space><div className="word-base">{base}</div><LikeWord name={base} kana={kana}/></Space>
       <div className="word-tag">{info}</div>
       {
         translation === undefined && <div>加载中...</div>
